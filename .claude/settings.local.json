@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(node -e \" const css = require\\('child_process'\\).execSync\\('node -e \\\\\"require\\(\\\\\\\\\\\\\"tailwindcss\\\\\\\\\\\\\"\\)\\\\\" 2>&1'\\).toString\\(\\); console.log\\(css.slice\\(0,200\\)\\); \")",
+      "Bash(node -e \"const theme = require\\('/Users/oleksandrmedytskyi/Developer/Personal/lavanda-cosmetology/node_modules/tailwindcss/dist/default-theme.js'\\); console.log\\(JSON.stringify\\(theme.maxWidth || theme['max-width'] || Object.keys\\(theme\\).filter\\(k => k.includes\\('max'\\)\\), null, 2\\)\\)\")",
+      "Bash(node -e \" const {execSync} = require\\('child_process'\\); // Quick test: generate CSS for max-w-7xl and px-4 const result = execSync\\('echo \\\\\"<div class=\\\\\\\\\\\\\"max-w-7xl px-4 mx-auto\\\\\\\\\\\\\">\\\\\" | npx tailwindcss --content - 2>/dev/null', {cwd: '/Users/oleksandrmedytskyi/Developer/Personal/lavanda-cosmetology'}\\); console.log\\(result.toString\\(\\).substring\\(0, 500\\)\\); \")"
+    ]
+  }
+}
