@@ -28,6 +28,7 @@ export const About = () => {
                   alt="Antonina Cholovska, founder and licensed esthetician at Lavanda Cosmetology, holding a skincare serum bottle"
                   fill
                   priority
+                  sizes="(max-width: 1024px) 100vw, 50vw"
                   className="object-cover"
                 />
               </div>

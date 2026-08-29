@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 
+const isDev = process.env.NODE_ENV === "development";
+
 const securityHeaders = [
   // Prevent clickjacking — disallow embedding in iframes
   { key: "X-Frame-Options", value: "DENY" },
@@ -19,8 +21,9 @@ const securityHeaders = [
     key: "Content-Security-Policy",
     value: [
       "default-src 'self'",
-      // Scripts: self + Cloudflare Turnstile
-      "script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com",
+      // Scripts: self + Cloudflare Turnstile + Vercel preview toolbar (injected in preview deployments)
+      // 'unsafe-eval' is required by React in development mode for call-stack reconstruction
+      `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""} https://challenges.cloudflare.com https://vercel.live https://*.vercel.live`,
       // Styles: self + inline (Tailwind requires this)
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       // Fonts: self + Google Fonts
@@ -29,8 +32,8 @@ const securityHeaders = [
       "img-src 'self' data: https://images.unsplash.com",
       // Frames: Cloudflare Turnstile widget runs in an iframe
       "frame-src https://challenges.cloudflare.com",
-      // API calls: self + Cloudflare Turnstile verify + Telegram (server-side only, but safe to list)
-      "connect-src 'self' https://challenges.cloudflare.com",
+      // API calls: self + Cloudflare Turnstile verify + Vercel preview toolbar connections
+      "connect-src 'self' https://challenges.cloudflare.com https://vercel.live https://*.vercel.live wss://*.vercel.live",
       // Block all plugins (Flash, etc.)
       "object-src 'none'",
       // Disallow <base> tag hijacking
