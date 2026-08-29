@@ -1,13 +1,14 @@
 "use client";
 
 import {useState, SyntheticEvent} from "react";
-import { Container, Section } from "@/components/ui/Layout";
-import { Heading } from "@/components/ui/Heading";
-import { Badge } from "@/components/ui/Badge";
-import { Input, Textarea } from "@/components/ui/Form";
-import { Button } from "@/components/ui/Button";
-import { Phone, Mail, MapPin, CheckCircle2 } from "lucide-react";
-import { InstagramIcon, FacebookIcon } from "@/components/ui/SocialIcons";
+import {Container, Section} from "@/components/ui/Layout";
+import {Heading} from "@/components/ui/Heading";
+import {Badge} from "@/components/ui/Badge";
+import {Input, Textarea} from "@/components/ui/Form";
+import {Button} from "@/components/ui/Button";
+import {Phone, Mail, MapPin, CheckCircle2} from "lucide-react";
+import {InstagramIcon, FacebookIcon} from "@/components/ui/SocialIcons";
+import {CONTACT_INFO} from "@/data";
 
 interface FormState {
   name: string;
@@ -16,7 +17,7 @@ interface FormState {
   message: string;
 }
 
-const initialForm: FormState = { name: "", phone: "", email: "", message: "" };
+const initialForm: FormState = {name: "", phone: "", email: "", message: ""};
 
 export const Contact = () => {
   const [form, setForm] = useState<FormState>(initialForm);
@@ -48,13 +49,14 @@ export const Contact = () => {
 
             <div className="space-y-8">
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-lavender-mist rounded-2xl flex items-center justify-center text-primary shrink-0">
-                  <Phone size={24} />
+                <div
+                  className="w-12 h-12 bg-lavender-mist rounded-2xl flex items-center justify-center text-primary shrink-0">
+                  <Phone size={24}/>
                 </div>
                 <div>
                   <p className="text-sm text-muted mb-1">Телефон</p>
-                  <a href="tel:+380000000000" className="text-lg font-medium hover:text-primary transition-colors">
-                    +38 (000) 000-00-00
+                  <a href={`tel:${CONTACT_INFO.phone.trim()}`} className="text-lg font-medium hover:text-primary transition-colors">
+                    {CONTACT_INFO.phone}
                   </a>
                 </div>
               </div>
@@ -65,37 +67,47 @@ export const Contact = () => {
                 </div>
                 <div>
                   <p className="text-sm text-muted mb-1">Електронна пошта</p>
-                  <a href="mailto:info@lavanda.com" className="text-lg font-medium hover:text-primary transition-colors">
-                    info@lavanda.com
+                  <a href={`mailto:${CONTACT_INFO.email}`} className="text-lg font-medium hover:text-primary transition-colors">
+                    {CONTACT_INFO.email}
                   </a>
                 </div>
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-lavender-mist rounded-2xl flex items-center justify-center text-primary shrink-0">
-                  <MapPin size={24} />
+                <div
+                  className="w-12 h-12 bg-lavender-mist rounded-2xl flex items-center justify-center text-primary shrink-0">
+                  <MapPin size={24}/>
                 </div>
                 <div>
                   <p className="text-sm text-muted mb-1">Адреса</p>
-                  <p className="text-lg font-medium">м. Київ, вул. Приклад (центр)</p>
+                  <a
+                    href={CONTACT_INFO.addressGoogleMaps}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-lg font-medium hover:text-primary transition-colors block"
+                  >
+                    {CONTACT_INFO.address}
+                  </a>
                 </div>
               </div>
             </div>
 
             <div className="mt-12 flex gap-4">
               <a
-                href="#"
+                href={CONTACT_INFO.instagram}
                 aria-label="Instagram"
+                target="_blank"
                 className="p-4 bg-surface rounded-2xl text-primary hover:bg-primary hover:text-white transition-all shadow-sm"
               >
-                <InstagramIcon width={24} height={24} />
+                <InstagramIcon width={24} height={24}/>
               </a>
               <a
-                href="#"
+                href={CONTACT_INFO.facebook}
                 aria-label="Facebook"
+                target="_blank"
                 className="p-4 bg-surface rounded-2xl text-primary hover:bg-primary hover:text-white transition-all shadow-sm"
               >
-                <FacebookIcon width={24} height={24} />
+                <FacebookIcon width={24} height={24}/>
               </a>
             </div>
           </div>
@@ -103,7 +115,7 @@ export const Contact = () => {
           <div className="bg-surface p-8 md:p-12 rounded-[40px] border border-border shadow-soft">
             {isSuccess ? (
               <div className="flex flex-col items-center justify-center h-full min-h-80 text-center gap-4">
-                <CheckCircle2 size={56} className="text-primary" />
+                <CheckCircle2 size={56} className="text-primary"/>
                 <h3 className="text-2xl font-heading font-medium">Дякуємо!</h3>
                 <p className="text-muted max-w-xs">
                   Ваше повідомлення надіслано. Я зв&apos;яжуся з вами найближчим часом.
@@ -126,7 +138,7 @@ export const Contact = () => {
                         placeholder="Олена"
                         required
                         value={form.name}
-                        onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
+                        onChange={(e) => setForm((f) => ({...f, name: e.target.value}))}
                       />
                     </div>
                     <div className="space-y-2">
@@ -139,7 +151,7 @@ export const Contact = () => {
                         placeholder="+38 (0__) ___ __ __"
                         required
                         value={form.phone}
-                        onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
+                        onChange={(e) => setForm((f) => ({...f, phone: e.target.value}))}
                       />
                     </div>
                   </div>
@@ -152,7 +164,7 @@ export const Contact = () => {
                       type="email"
                       placeholder="example@mail.com"
                       value={form.email}
-                      onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
+                      onChange={(e) => setForm((f) => ({...f, email: e.target.value}))}
                     />
                   </div>
                   <div className="space-y-2">
@@ -164,7 +176,7 @@ export const Contact = () => {
                       placeholder="Я хотіла б дізнатися більше про..."
                       required
                       value={form.message}
-                      onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))}
+                      onChange={(e) => setForm((f) => ({...f, message: e.target.value}))}
                     />
                   </div>
                   <Button

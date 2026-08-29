@@ -83,6 +83,37 @@ h1, h2, h3, h4, h5, h6 {
 .text-small { @apply text-sm leading-normal; }
 .text-caption { @apply text-xs uppercase tracking-widest font-light; }
 
+/* 3D and Custom utilities */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.rotate-y-5 {
+  transform: rotateY(5deg);
+}
+
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+/* Scrollbar utilities */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: var(--color-lavender-light);
+  border-radius: 10px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: var(--color-lavender);
+}
+
 /* Animation delay utilities */
 .delay-200 { animation-delay: 200ms; }
 .delay-500 { animation-delay: 500ms; }

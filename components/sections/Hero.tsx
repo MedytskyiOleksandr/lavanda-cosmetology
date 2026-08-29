@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/Button";
 import { Container, Section } from "@/components/ui/Layout";
 import { Heading } from "@/components/ui/Heading";
 import { Badge } from "@/components/ui/Badge";
+import facialMaskImg from "@/public/images/professional-facial-treatment-spa-kyiv.webp"
 
 export const Hero = () => {
   return (
@@ -16,14 +17,14 @@ export const Hero = () => {
           <div className="animate-slide-up">
             <Badge className="mb-6">Краса починається тут</Badge>
             <Heading as="h1" variant="display" className="mb-6">
-              Ваша шкіра заслуговує на <span className="text-primary italic">професійний</span> догляд
+              Ваша шкіра заслуговує на професійний догляд
             </Heading>
             <p className="text-body text-muted mb-8 max-w-lg">
               Комплексний підхід до краси та здоров&#39;я: професійна косметологія та індивідуальна нутриціологія від Антоніни Чоловської.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" variant="primary">Записатися на візит</Button>
-              <Button size="lg" variant="outline">Переглянути послуги</Button>
+              <Button size="lg" variant="primary" href="#contact">Записатися на візит</Button>
+              <Button size="lg" variant="outline" href="#pricing">Переглянути послуги</Button>
             </div>
 
             <div className="mt-12 flex items-center gap-8 border-t border-border pt-8">
@@ -32,11 +33,7 @@ export const Hero = () => {
                 <p className="text-sm text-muted">Років досвіду</p>
               </div>
               <div>
-                <p className="text-2xl font-heading font-semibold text-foreground">2000+</p>
-                <p className="text-sm text-muted">Задоволених клієнтів</p>
-              </div>
-              <div>
-                <p className="text-2xl font-heading font-semibold text-foreground">15+</p>
+                <p className="text-2xl font-heading font-semibold text-foreground">150+</p>
                 <p className="text-sm text-muted">Сертифікатів</p>
               </div>
             </div>
@@ -45,8 +42,8 @@ export const Hero = () => {
           <div className="relative animate-fade-in delay-200">
             <div className="relative aspect-[4/5] rounded-[32px] overflow-hidden shadow-hover border-8 border-white">
               <Image
-                src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&q=80&w=800"
-                alt="Cosmetology treatment"
+                src={facialMaskImg}
+                alt="Esthetician using a brush to apply a soothing green clay mask to a client's face"
                 fill
                 className="object-cover"
                 priority
