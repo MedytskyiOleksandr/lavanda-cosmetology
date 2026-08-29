@@ -80,8 +80,8 @@ const PricingCard = ({
         {/* Paper View Overlay */}
         <div
           className={cn(
-            "absolute inset-0 z-20 transition-[opacity,transform] duration-500 ease-out transform-gpu opacity-0 pointer-events-none translate-y-0 scale-[0.98] group-hover:opacity-100 group-hover:pointer-events-auto group-hover:scale-100",
-            isOpen ? "opacity-100 pointer-events-auto scale-100" : ""
+            "absolute inset-0 z-20 transition-[opacity,transform] duration-500 ease-out transform-gpu opacity-0 pointer-events-none translate-y-0 scale-[0.98] group-hover:opacity-100 group-hover:pointer-events-auto group-hover:scale-100 group-hover:rotate-y-5-z-10",
+            isOpen ? "opacity-100 pointer-events-auto scale-100 rotate-y-5-z-10" : ""
           )}
           onClick={(e) => e.stopPropagation()}
         >
