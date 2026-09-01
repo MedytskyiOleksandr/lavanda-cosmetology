@@ -1,13 +1,15 @@
 import * as React from "react";
+import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement | HTMLAnchorElement> {
   variant?: "primary" | "secondary" | "outline" | "ghost" | "link";
   size?: "sm" | "md" | "lg" | "icon";
+  href?: string;
 }
 
-export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = "primary", size = "md", ...props }, ref) => {
+export const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(
+  ({ className, variant = "primary", size = "md", href, ...props }, ref) => {
     const variants = {
       primary: "bg-primary text-white hover:bg-secondary shadow-soft hover:shadow-hover",
       secondary: "bg-secondary text-white hover:bg-primary shadow-soft hover:shadow-hover",
@@ -23,16 +25,30 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       icon: "h-10 w-10",
     };
 
+    const classes = cn(
+      "inline-flex items-center justify-center rounded-lg font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:pointer-events-none disabled:opacity-50 cursor-pointer",
+      variants[variant],
+      sizes[size],
+      className
+    );
+
+    if (href) {
+      return (
+        <Link
+          href={href}
+          className={classes}
+          {...(props as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
+        >
+          {props.children}
+        </Link>
+      );
+    }
+
     return (
       <button
-        ref={ref}
-        className={cn(
-          "inline-flex items-center justify-center rounded-lg font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:pointer-events-none disabled:opacity-50 cursor-pointer",
-          variants[variant],
-          sizes[size],
-          className
-        )}
-        {...props}
+        ref={ref as React.Ref<HTMLButtonElement>}
+        className={classes}
+        {...(props as React.ButtonHTMLAttributes<HTMLButtonElement>)}
       />
     );
   }

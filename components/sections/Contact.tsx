@@ -1,38 +1,117 @@
 "use client";
 
-import {useState, SyntheticEvent} from "react";
-import { Container, Section } from "@/components/ui/Layout";
-import { Heading } from "@/components/ui/Heading";
-import { Badge } from "@/components/ui/Badge";
-import { Input, Textarea } from "@/components/ui/Form";
-import { Button } from "@/components/ui/Button";
-import { Phone, Mail, MapPin, CheckCircle2 } from "lucide-react";
-import { InstagramIcon, FacebookIcon } from "@/components/ui/SocialIcons";
+import {useState, useRef, SyntheticEvent} from "react";
+import {Container, Section} from "@/components/ui/Layout";
+import {Heading} from "@/components/ui/Heading";
+import {Badge} from "@/components/ui/Badge";
+import {Input, Textarea} from "@/components/ui/Form";
+import {Button} from "@/components/ui/Button";
+import {Phone, Mail, MapPin, CheckCircle2} from "lucide-react";
+import {InstagramIcon, FacebookIcon} from "@/components/ui/SocialIcons";
+import {CONTACT_INFO} from "@/data";
+import {Turnstile} from "@marsidev/react-turnstile";
 
 interface FormState {
   name: string;
   phone: string;
   email: string;
   message: string;
+  // Honeypot field — must stay empty; filled only by bots
+  website: string;
 }
 
-const initialForm: FormState = { name: "", phone: "", email: "", message: "" };
+interface FormErrors {
+  name?: string;
+  phone?: string;
+  email?: string;
+  message?: string;
+  general?: string;
+}
+
+const initialForm: FormState = {name: "", phone: "", email: "", message: "", website: ""};
+
+function validateForm(form: FormState): FormErrors {
+  const errors: FormErrors = {};
+
+  if (!form.name.trim()) {
+    errors.name = "Введіть ваше ім'я";
+  } else if (form.name.trim().length < 2) {
+    errors.name = "Ім'я має містити щонайменше 2 символи";
+  }
+
+  if (!form.phone.trim()) {
+    errors.phone = "Введіть номер телефону";
+  } else if (!/^[\d\s\+\(\)\-]{7,20}$/.test(form.phone.trim())) {
+    errors.phone = "Введіть коректний номер телефону";
+  }
+
+  if (form.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+    errors.email = "Введіть коректний email";
+  }
+
+  if (!form.message.trim()) {
+    errors.message = "Введіть ваше повідомлення";
+  } else if (form.message.trim().length < 10) {
+    errors.message = "Повідомлення має містити щонайменше 10 символів";
+  }
+
+  return errors;
+}
 
 export const Contact = () => {
   const [form, setForm] = useState<FormState>(initialForm);
+  const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const turnstileToken = useRef<string | null>(null);
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
+
+    const validationErrors = validateForm(form);
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
+    if (!turnstileToken.current) {
+      setErrors({general: "Будь ласка, пройдіть перевірку безпеки"});
+      return;
+    }
+
+    setErrors({});
     setIsSubmitting(true);
 
-    // Simulated API call — replace with real endpoint when ready
-    await new Promise((resolve) => setTimeout(resolve, 1200));
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({...form, turnstileToken: turnstileToken.current, website: form.website}),
+      });
 
-    setIsSubmitting(false);
-    setIsSuccess(true);
-    setForm(initialForm);
+      const data = await res.json();
+
+      if (!res.ok) {
+        if (data.errors) {
+          const mapped: FormErrors = {};
+          for (const [key, msgs] of Object.entries(data.errors)) {
+            (mapped as Record<string, string>)[key] = (msgs as string[])[0];
+          }
+          setErrors(mapped);
+        } else {
+          setErrors({general: data.error ?? "Сталася помилка. Спробуйте ще раз."});
+        }
+        return;
+      }
+
+      setIsSuccess(true);
+      setForm(initialForm);
+      turnstileToken.current = null;
+    } catch {
+      setErrors({general: "Не вдалося надіслати повідомлення. Перевірте з'єднання."});
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -48,13 +127,14 @@ export const Contact = () => {
 
             <div className="space-y-8">
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-lavender-mist rounded-2xl flex items-center justify-center text-primary shrink-0">
-                  <Phone size={24} />
+                <div
+                  className="w-12 h-12 bg-lavender-mist rounded-2xl flex items-center justify-center text-primary shrink-0">
+                  <Phone size={24}/>
                 </div>
                 <div>
                   <p className="text-sm text-muted mb-1">Телефон</p>
-                  <a href="tel:+380000000000" className="text-lg font-medium hover:text-primary transition-colors">
-                    +38 (000) 000-00-00
+                  <a href={`tel:${CONTACT_INFO.phone.trim()}`} className="text-lg font-medium hover:text-primary transition-colors">
+                    {CONTACT_INFO.phone}
                   </a>
                 </div>
               </div>
@@ -65,37 +145,47 @@ export const Contact = () => {
                 </div>
                 <div>
                   <p className="text-sm text-muted mb-1">Електронна пошта</p>
-                  <a href="mailto:info@lavanda.com" className="text-lg font-medium hover:text-primary transition-colors">
-                    info@lavanda.com
+                  <a href={`mailto:${CONTACT_INFO.email}`} className="text-lg font-medium hover:text-primary transition-colors">
+                    {CONTACT_INFO.email}
                   </a>
                 </div>
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-lavender-mist rounded-2xl flex items-center justify-center text-primary shrink-0">
-                  <MapPin size={24} />
+                <div
+                  className="w-12 h-12 bg-lavender-mist rounded-2xl flex items-center justify-center text-primary shrink-0">
+                  <MapPin size={24}/>
                 </div>
                 <div>
                   <p className="text-sm text-muted mb-1">Адреса</p>
-                  <p className="text-lg font-medium">м. Київ, вул. Приклад (центр)</p>
+                  <a
+                    href={CONTACT_INFO.addressGoogleMaps}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-lg font-medium hover:text-primary transition-colors block"
+                  >
+                    {CONTACT_INFO.address}
+                  </a>
                 </div>
               </div>
             </div>
 
             <div className="mt-12 flex gap-4">
               <a
-                href="#"
+                href={CONTACT_INFO.instagram}
                 aria-label="Instagram"
+                target="_blank"
                 className="p-4 bg-surface rounded-2xl text-primary hover:bg-primary hover:text-white transition-all shadow-sm"
               >
-                <InstagramIcon width={24} height={24} />
+                <InstagramIcon width={24} height={24}/>
               </a>
               <a
-                href="#"
+                href={CONTACT_INFO.facebook}
                 aria-label="Facebook"
+                target="_blank"
                 className="p-4 bg-surface rounded-2xl text-primary hover:bg-primary hover:text-white transition-all shadow-sm"
               >
-                <FacebookIcon width={24} height={24} />
+                <FacebookIcon width={24} height={24}/>
               </a>
             </div>
           </div>
@@ -103,7 +193,7 @@ export const Contact = () => {
           <div className="bg-surface p-8 md:p-12 rounded-[40px] border border-border shadow-soft">
             {isSuccess ? (
               <div className="flex flex-col items-center justify-center h-full min-h-80 text-center gap-4">
-                <CheckCircle2 size={56} className="text-primary" />
+                <CheckCircle2 size={56} className="text-primary"/>
                 <h3 className="text-2xl font-heading font-medium">Дякуємо!</h3>
                 <p className="text-muted max-w-xs">
                   Ваше повідомлення надіслано. Я зв&apos;яжуся з вами найближчим часом.
@@ -124,10 +214,16 @@ export const Contact = () => {
                       <Input
                         id="name"
                         placeholder="Олена"
-                        required
                         value={form.name}
-                        onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
+                        aria-invalid={!!errors.name}
+                        onChange={(e) => {
+                          setForm((f) => ({...f, name: e.target.value}));
+                          if (errors.name) setErrors((err) => ({...err, name: undefined}));
+                        }}
                       />
+                      {errors.name && (
+                        <p className="text-xs text-red-500 ml-1" role="alert">{errors.name}</p>
+                      )}
                     </div>
                     <div className="space-y-2">
                       <label htmlFor="phone" className="text-sm font-medium text-foreground ml-1">
@@ -137,10 +233,16 @@ export const Contact = () => {
                         id="phone"
                         type="tel"
                         placeholder="+38 (0__) ___ __ __"
-                        required
                         value={form.phone}
-                        onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
+                        aria-invalid={!!errors.phone}
+                        onChange={(e) => {
+                          setForm((f) => ({...f, phone: e.target.value}));
+                          if (errors.phone) setErrors((err) => ({...err, phone: undefined}));
+                        }}
                       />
+                      {errors.phone && (
+                        <p className="text-xs text-red-500 ml-1" role="alert">{errors.phone}</p>
+                      )}
                     </div>
                   </div>
                   <div className="space-y-2">
@@ -152,8 +254,15 @@ export const Contact = () => {
                       type="email"
                       placeholder="example@mail.com"
                       value={form.email}
-                      onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
+                      aria-invalid={!!errors.email}
+                      onChange={(e) => {
+                        setForm((f) => ({...f, email: e.target.value}));
+                        if (errors.email) setErrors((err) => ({...err, email: undefined}));
+                      }}
                     />
+                    {errors.email && (
+                      <p className="text-xs text-red-500 ml-1" role="alert">{errors.email}</p>
+                    )}
                   </div>
                   <div className="space-y-2">
                     <label htmlFor="message" className="text-sm font-medium text-foreground ml-1">
@@ -162,11 +271,42 @@ export const Contact = () => {
                     <Textarea
                       id="message"
                       placeholder="Я хотіла б дізнатися більше про..."
-                      required
                       value={form.message}
-                      onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))}
+                      aria-invalid={!!errors.message}
+                      onChange={(e) => {
+                        setForm((f) => ({...f, message: e.target.value}));
+                        if (errors.message) setErrors((err) => ({...err, message: undefined}));
+                      }}
+                    />
+                    {errors.message && (
+                      <p className="text-xs text-red-500 ml-1" role="alert">{errors.message}</p>
+                    )}
+                  </div>
+                  {/* Honeypot — visually hidden, must never be filled by a real user */}
+                  <div aria-hidden="true" className="absolute -left-[9999px] -top-[9999px] overflow-hidden" tabIndex={-1}>
+                    <label htmlFor="website">Website</label>
+                    <input
+                      id="website"
+                      name="website"
+                      type="text"
+                      autoComplete="off"
+                      tabIndex={-1}
+                      value={form.website}
+                      onChange={(e) => setForm((f) => ({...f, website: e.target.value}))}
                     />
                   </div>
+                  <Turnstile
+                    siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? ""}
+                    onSuccess={(token) => {
+                      turnstileToken.current = token;
+                      if (errors.general) setErrors((err) => ({...err, general: undefined}));
+                    }}
+                    onExpire={() => { turnstileToken.current = null; }}
+                    onError={() => { turnstileToken.current = null; }}
+                  />
+                  {errors.general && (
+                    <p className="text-sm text-red-500 text-center" role="alert">{errors.general}</p>
+                  )}
                   <Button
                     type="submit"
                     size="lg"

@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {NAVIGATION} from "@/data";
 import {Container} from "@/components/ui/Layout";
 import {cn} from "@/lib/utils";
@@ -17,14 +18,24 @@ export const Header = () => {
       )}
     >
       <Container className="flex items-center justify-between">
-        <Link href="/" className="flex flex-col group">
-          <span
-            className="text-xl md:text-2xl font-heading font-medium tracking-wide text-foreground group-hover:text-primary transition-colors">
-            Lavanda Cosmetology
-          </span>
-          <span className="text-[10px] uppercase tracking-[0.2em] text-secondary font-body font-light">
-            Antonina Cholovska
-          </span>
+        <Link href="/" className="flex items-center gap-3 group">
+          <div className="relative w-10 h-10 md:w-12 md:h-12 overflow-hidden rounded-full border border-lavender-light">
+            <Image
+              src="/lavanda_icon.svg"
+              alt="Lavanda Cosmetology Logo"
+              fill
+              className="object-cover group-hover:scale-110 transition-transform duration-300"
+            />
+          </div>
+          <div className="flex flex-col">
+            <span
+              className="text-xl md:text-2xl font-heading font-medium tracking-wide text-foreground group-hover:text-primary transition-colors leading-tight">
+              Lavanda Cosmetology
+            </span>
+            <span className="text-[10px] uppercase tracking-[0.2em] text-secondary font-body font-light">
+              Antonina Cholovska
+            </span>
+          </div>
         </Link>
 
         {/* Desktop Links */}

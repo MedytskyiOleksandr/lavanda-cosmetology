@@ -4,7 +4,7 @@ export const getBeautySalonSchema = () => ({
   "@context": "https://schema.org",
   "@type": "BeautySalon",
   "name": "Lavanda Cosmetology",
-  "image": "https://lavanda-cosmetology.com.ua/logo.png", // Placeholder
+  "image": "https://lavanda-cosmetology.com.ua/lavanda_icon.svg",
   "@id": "https://lavanda-cosmetology.com.ua",
   "url": "https://lavanda-cosmetology.com.ua",
   "telephone": "+380000000000",

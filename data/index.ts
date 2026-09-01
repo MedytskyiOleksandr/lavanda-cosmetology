@@ -1,12 +1,12 @@
-import { Service, PricingCategory, Testimonial, FAQItem } from "@/types";
+import {Service, PricingCategory, Testimonial, FAQItem} from "@/types";
 
 export const NAVIGATION = [
-  { label: "Головна", href: "#hero" },
-  { label: "Про мене", href: "#about" },
-  { label: "Послуги", href: "#services" },
-  { label: "Прайс", href: "#pricing" },
-  { label: "Відгуки", href: "#testimonials" },
-  { label: "Контакти", href: "#contact" },
+  {label: "Головна", href: "#hero"},
+  {label: "Про мене", href: "#about"},
+  {label: "Послуги", href: "#services"},
+  {label: "Прайс", href: "#pricing"},
+  {label: "Відгуки", href: "#testimonials"},
+  {label: "Контакти", href: "#contact"},
 ];
 
 export const SERVICES: Service[] = [
@@ -42,20 +42,109 @@ export const SERVICES: Service[] = [
 
 export const PRICING: PricingCategory[] = [
   {
-    category: "Косметологія обличчя",
+    id: "cleansing",
+    category: "Очищення шкіри",
+    image: "/images/pricing/cleansing.jpg",
     items: [
-      { name: "Комбінована чистка", price: "950 грн", duration: "90 хв" },
-      { name: "Ультразвукова чистка", price: "800 грн", duration: "60 хв" },
-      { name: "Карбокситерапія", price: "1100 грн", duration: "60 хв" },
-      { name: "Ферментотерапія", price: "1300 грн", duration: "80 хв" },
+      {name: "Атравматична ч/о", price: "800-1500 ₴"},
+      {name: "Механічна ч/о + кріотерапія", price: "1600-1800 ₴"},
+      {name: "Комбінована ч/о + кріотерапія", price: "1700-2000 ₴"},
+      {name: "Ультразвукова ч/о + кріотерапія", price: "1100-1500 ₴"},
+      {name: "Вакуумна ч/о + кріотерапія", price: "1200-1600 ₴"},
+      {name: "Очищення спини", price: "1900-2200 ₴"},
+      {name: "Очищення шиї та декольте", price: "1500-1700 ₴"},
+    ],
+    subcategories: [
+      {
+        name: "Додатково до очищення шкіри",
+        items: [
+          {name: "Ампульний концентрат", price: "200-300 ₴"},
+          {name: "Пілінги кислотні", price: "400-700 ₴"},
+          {name: "Фітопілінг", price: "350 ₴"},
+          {name: "Відновлююча маска", price: "200 ₴"},
+          {name: "Альгінатна маска з сироваткою", price: "300-450 ₴"},
+          {name: "Колагеновий догляд", price: "1200 ₴"},
+          {name: "Електропорація", price: "400-650 ₴"},
+          {name: "Киснева мезотерапія", price: "350-450 ₴"},
+          {name: "Дарсонваль", price: "250 ₴"},
+        ]
+      }
+    ]
+  },
+  {
+    id: "care",
+    category: "Доглядові процедури",
+    image: "/images/pricing/care.jpg",
+    items: [
+      {name: "Авторський масаж (обличчя, шия, декольте, голова)", price: "850-1100 ₴"},
+      {name: "Масаж з маскою", price: "1100-2200 ₴"},
+      {name: "Відновлення шкіри", price: "800-2000 ₴"},
+      {name: "Колагеновий догляд", price: "1700 ₴"},
+      {name: "Догляд за шкірою з акне", price: "800-1500 ₴"},
+      {name: "Карбокситерапія", price: "1300-1500 ₴"},
+      {name: "Фітопілінг", price: "900-1100 ₴"},
+      {name: "Кислотні пілінги", price: "900-1300 ₴"},
     ],
   },
   {
-    category: "Догляд та пілінги",
+    id: "apparatus",
+    category: "Апаратні процедури",
+    image: "/images/pricing/apparatus.jpg",
     items: [
-      { name: "Мигдалевий пілінг", price: "750 грн", duration: "45 хв" },
-      { name: "Пілінг PRX-T33", price: "1800 грн", duration: "40 хв" },
-      { name: "Зволожуючий догляд", price: "900 грн", duration: "60 хв" },
+      {name: "Мікрострумова терапія", price: "1150-1850 ₴"},
+      {name: "Вакуумний масаж", price: "1300-1700 ₴"},
+      {name: "RF-ліфтинг", price: "1350-1700 ₴"},
+      {name: "Електропорація", price: "1250-1700 ₴"},
+      {name: "Киснева мезотерапія (OxyJet Peel)", price: "1000-1500 ₴"},
+      {name: "Алмазна мікродермабразія", price: "1300-1800 ₴"},
+      {name: "Фракційна мезотерапія з мезопрепаратом", price: "1600-2600 ₴"},
+      {name: "Фракційна мезотерапія з пілінгом", price: "1600-2700 ₴"},
+      {name: "Комплексна процедура з дарсонвалем", price: "950-1100 ₴"},
+      {name: "Дарсонваль шкіри голови", price: "450 ₴"},
+    ],
+  },
+  {
+    id: "mesotherapy",
+    category: "Мезотерапія",
+    image: "/images/pricing/mesotherapy.jpg",
+    items: [
+      {name: "Тьмяна та стресова шкіра", price: "2400-3500 ₴"},
+      {name: "Шкіра з акне та постакне", price: "2400 ₴"},
+      {name: "Алопеція/укріплення волосся", price: "2300 ₴"},
+      {name: "Зволоження та сяйво шкіри", price: "2400 ₴"},
+      {name: "Гіперпігментація шкіри", price: "2600 ₴"},
+      {name: "Ліфтинг шкіри", price: "2400 ₴"},
+      {name: "Капіляромезотерапія", price: "850 ₴"},
+      {name: "Екзосоми", price: "3000-23550 ₴"},
+    ],
+  },
+  {
+    id: "biorevitalization",
+    category: "Біоревіталізація",
+    image: "/images/pricing/biorevitalization.jpg",
+    items: [
+      {name: "Гіалуронова кислота", price: "4300-5500 ₴"},
+      {name: "Полінуклеотиди", price: "4700-7500 ₴"},
+      {name: "Полінуклеотиди + Гіалуронова кислота", price: "5400-8400 ₴"},
+    ],
+  },
+  {
+    id: "nutrition",
+    category: "Консультація нутриціолога",
+    image: "/images/pricing/nutrition.jpg",
+    items: [
+      {name: "Консультація (14 днів)", price: "4500 ₴"},
+      {name: "Консультація з супроводом (3 місяці)", price: "26500 ₴"},
+    ],
+    showFooterText: false,
+  },
+  {
+    id: "cosmetologist",
+    category: "Консультація косметолога",
+    image: "/images/pricing/consultation.jpg",
+    items: [
+      {name: "Консультація + Процедура", price: "0 ₴"},
+      {name: "Консультація офлайн/онлайн", price: "500-700 ₴"},
     ],
   },
 ];
@@ -102,14 +191,26 @@ export const FAQ: FAQItem[] = [
   },
   {
     question: "Як підготуватися до першого візиту?",
-    answer: "Прийдіть з чистим обличчям без макіяжу, якщо це можливо. Захопіть список косметичних засобів, якими ви користуєтеся — це допоможе мені краще підібрати програму догляду.",
+    answer: "Візьміть список косметичних засобів, якими ви користуєтеся — це допоможе мені краще підібрати програму догляду.",
   },
   {
     question: "Чи болючі хімічні пілінги?",
-    answer: "Більшість пілінгів супроводжується лише легким поколюванням або відчуттям тепла. Перед процедурою ми обговоримо всі деталі і я підберу пілінг відповідно до вашого порогу чутливості.",
+    answer: "Більшість пілінгів супроводжується лише легким поколюванням, печінням або відчуттям тепла. Перед процедурою ми обговоримо всі деталі і я підберу пілінг відповідно до потреб вашої шкіри та порогу чутливості.",
   },
   {
     question: "Скільки часу займає відновлення після процедур?",
-    answer: "Залежить від виду процедури. Ультразвукова чистка — без реабілітації. Після хімічних пілінгів можливе легке лущення 3–5 днів. Детальніше про кожну процедуру я розповім на консультації.",
+    answer: "Залежить від виду процедури. Ультразвукова, вакуумна та атравматична чистки проходять без реабілітації. Після механічної чистки можливе почервоніння, припухлість і лущення протягом 3–7 днів, а після хімічних пілінгів — почервоніння та лущення 3–10 днів. Детальніше про кожну процедуру я розповім на консультації.",
   },
 ];
+
+export const PLACE_ID = "ChIJK72lXd3J1EARq1ct6rSVrB0"
+export const BUSINESS_NAME = "LAVANDA cosmetology"
+
+export const CONTACT_INFO = {
+  address: "м. Київ, вул. Метрологічна 44",
+  email: "antonina.cholovska@gmail.com",
+  phone: "+380 97 942 0242",
+  addressGoogleMaps: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(BUSINESS_NAME)}&query_place_id=${PLACE_ID}`,
+  instagram: "https://www.instagram.com/antonina_cholovska",
+  facebook: "https://www.facebook.com/antonina.shatkivska.7",
+}

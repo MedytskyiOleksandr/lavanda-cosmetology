@@ -14,8 +14,15 @@ export interface PricingItem {
 }
 
 export interface PricingCategory {
+  id: string;
   category: string;
+  image: string;
   items: PricingItem[];
+  showFooterText?: boolean;
+  subcategories?: {
+    name: string;
+    items: PricingItem[];
+  }[];
 }
 
 export interface Testimonial {

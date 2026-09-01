@@ -38,11 +38,20 @@ export const metadata: Metadata = {
     title: "Lavanda Cosmetology — Антоніна Чоловська",
     description: "Професійна косметологія та нутриціологія у Києві.",
     siteName: "Lavanda Cosmetology",
+    images: [
+      {
+        url: "/lavanda_icon.svg",
+        width: 800,
+        height: 800,
+        alt: "Lavanda Cosmetology Logo",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Lavanda Cosmetology — Антоніна Чоловська",
     description: "Професійна косметологія та нутриціологія у Києві.",
+    images: ["/lavanda_icon.svg"],
   },
   robots: {
     index: true,
